@@ -17,7 +17,6 @@ class App
     while selection != 7
       display_options
       selection = gets.chomp.strip.to_i
-      puts
       do_task(selection)
     end
     puts 'Thank you for using this app!'
@@ -37,22 +36,36 @@ class App
 
   def do_task(selection)
     case selection
+    when 1, 2, 6
+      list_tasks(selection)
+    when 3, 4, 5
+      create_tasks(selection)
+    when 7
+      nil
+    else
+      puts 'Wrong input, please select one of the options from the menu'
+    end
+  end
+
+  def list_tasks(selection)
+    case selection
     when 1
       list_all_books
     when 2
       list_all_people
+    when 6
+      list_person_rentals
+    end
+  end
+
+  def create_tasks(selection)
+    case selection
     when 3
       create_person
     when 4
       create_book
     when 5
       create_rental
-    when 6
-      list_person_rentals
-    when 7
-      nil
-    else
-      puts 'Please select a valid choice from the list'
     end
   end
 
@@ -69,16 +82,16 @@ class App
       @id += 1
     else
       puts 'Invalid Selection. Returning to main menu'
-      return
+      nil
     end
   end
 
   def create_student
     print 'Age: '
     age = gets.chomp.to_i
-    if age <= 0 
+    if age <= 0
       @id -= 1
-      return puts "Wrong input for age. Returning to main menu"
+      return puts 'Wrong input for age. Returning to main menu'
     end
     print 'Name: '
     name = gets.chomp.strip.capitalize
@@ -89,10 +102,6 @@ class App
       permission = true
     when 'N', 'NO'
       permission = false
-    else
-      puts 'Wrong input for permission'
-      @id -= 1
-      return
     end
     student = Student.new(@id, age, nil, name, parent_permission: permission)
     @people << student
@@ -102,9 +111,9 @@ class App
   def create_teacher
     print 'Age: '
     age = gets.chomp.to_i
-    if age <= 0 
+    if age <= 0
       @id -= 1
-      return puts "Wrong input for age. Returning to main menu"
+      return puts 'Wrong input for age. Returning to main menu'
     end
     print 'Name: '
     name = gets.chomp.strip.capitalize
@@ -146,7 +155,7 @@ class App
     print 'Date (YYYY/MM/DD) : '
     date = gets.chomp.strip
     Rental.new(date, @books[book_selected], @people[person_selected])
-    puts "Rental created successfully"
+    puts 'Rental created successfully'
   end
 
   def list_person_rentals
