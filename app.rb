@@ -3,6 +3,7 @@ require_relative './student'
 require_relative './teacher'
 require_relative './rental'
 require_relative './book'
+require 'pry'
 
 class App
   def initialize
@@ -17,6 +18,7 @@ class App
     while selection != 7
       display_options
       selection = gets.chomp.strip.to_i
+      binding.pry
       do_task(selection)
     end
     puts 'Thank you for using this app!'
@@ -103,7 +105,7 @@ class App
     when 'N', 'NO'
       permission = false
     end
-    student = Student.new(@id, age, nil, name, parent_permission: permission)
+    student = Student.new(@id, age, name, permission)
     @people << student
     puts 'Person created successfully'
   end
